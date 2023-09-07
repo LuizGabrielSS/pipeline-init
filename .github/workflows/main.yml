@@ -31,7 +31,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Tests
-      run: python -m pytest tests\test_login.py 
+      run: python -m pytest tests/test_login.py 
 
   test-protected:
 
@@ -58,8 +58,8 @@ jobs:
           pip install -r requirements.txt
   
       - name: Run Tests
-        run: python -m pytest tests\test_protected.py 
-    
+        run: python -m pytest tests/test_protected.py 
+        
   build-docker:
 
     needs: [test-login,test-protected]
