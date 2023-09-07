@@ -1,0 +1,104 @@
+name: pipeline-init
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  test-login:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11.2
+
+    - name: Create and activate virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      run: python -m pytest tests\test_login.py 
+
+  test-protected:
+
+      runs-on: ubuntu-latest
+  
+      steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11.2
+  
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+  
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+  
+      - name: Run Tests
+        run: python -m pytest tests\test_protected.py 
+    
+  build-docker:
+
+    needs: [test-login,test-protected]
+  
+    runs-on: ubuntu-latest 
+    
+    steps:
+
+      - uses: actions/checkout@v2
+      - name: Build-docker
+        run: docker build -t teste:latest .
+
+  generate-exe:
+
+    needs: [test-login,test-protected]
+
+    runs-on: ubuntu-latest 
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11.2
+
+    - name: Create and activate virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
+
+    - name: Create exe
+      run: |
+        pyinstaller --onefile app.py
