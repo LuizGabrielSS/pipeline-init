@@ -1,3 +1,5 @@
+name: test-login
+
 jobs:
 
   test-login:
