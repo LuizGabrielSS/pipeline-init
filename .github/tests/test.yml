@@ -1,26 +1,28 @@
-test-login:
+jobs:
 
-    runs-on: ubuntu-latest
+  test-login:
 
-    steps:
+      runs-on: ubuntu-latest
 
-    - name: Checkout code
-      uses: actions/checkout@v2
+      steps:
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11.2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Create and activate virtual environment
-      run: |
-        python -m venv venv
-        source venv/bin/activate
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11.2
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
 
-    - name: Run Tests
-      run: python -m pytest tests/test_login.py 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run: python -m pytest tests/test_login.py 
